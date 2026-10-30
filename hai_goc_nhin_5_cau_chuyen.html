@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hai Góc Nhìn — Thư viện 5 câu chuyện</title>
+<style>
+:root{--bg:#f5f3ee;--paper:#fffefa;--ink:#292b26;--muted:#77796f;--line:#e6e2d9;--green:#526b58;--soft:#eaf0e9;--gold:#b28a53}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.7 Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+header{background:#293a30;color:white;padding:38px 22px 32px}.head,.wrap{max-width:1120px;margin:auto}.eyebrow{text-transform:uppercase;letter-spacing:.2em;font-size:11px;color:#c6d4c8;font-weight:800}h1{font:clamp(34px,5vw,52px)/1.08 Georgia,serif;margin:10px 0}header p{color:#d9e1d9;max-width:680px;margin:0}
+.wrap{display:grid;grid-template-columns:285px minmax(0,1fr);gap:22px;padding:26px 18px 55px}.side,.article{background:var(--paper);border:1px solid var(--line);border-radius:16px}.side{padding:18px;height:max-content;position:sticky;top:16px}.side h2{font:800 12px Inter,system-ui;letter-spacing:.13em;text-transform:uppercase;color:var(--muted);margin:2px 0 12px}
+.item{display:block;width:100%;border:1px solid transparent;background:transparent;text-align:left;padding:12px;border-radius:11px;margin:5px 0;cursor:pointer;color:inherit;font:inherit}.item:hover{background:#f5f3ed}.item.active{background:var(--soft);border-color:#d5e0d4}.item small{display:block;color:var(--muted);font-size:11px;letter-spacing:.07em;font-weight:800}.item strong{display:block;line-height:1.35;margin-top:3px;font-size:14px}.check{float:right;color:var(--green);font-weight:900}.progress{height:7px;background:#eeece6;border-radius:8px;overflow:hidden;margin:14px 0 6px}.progress span{display:block;height:100%;background:var(--green);width:0}.muted{color:var(--muted);font-size:12px}
+.article{padding:clamp(20px,4vw,42px)}.tags{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}.tag{background:#f0eee8;border-radius:30px;padding:4px 10px;color:#716951;font-size:12px}.article h2{font:clamp(29px,4vw,40px)/1.18 Georgia,serif;margin:0 0 10px}.intro{color:var(--muted);margin:0 0 20px}.hero{height:170px;border-radius:13px;background:linear-gradient(125deg,#344b3d,#83927c 55%,#c5b18e);display:flex;align-items:end;padding:20px;color:white;position:relative;overflow:hidden;margin:18px 0 24px}.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,#18251dcc,transparent 80%)}.hero span{z-index:1;font:23px Georgia,serif}
+.article h3{font-size:18px;margin:28px 0 8px}.story{font:17px/1.9 Georgia,serif}.story p{margin:0 0 15px}.pull{border-left:3px solid var(--gold);padding:13px 17px;background:#f8f4ec;margin:22px 0;font:italic 18px/1.6 Georgia,serif}
+.how{background:var(--soft);border-radius:12px;padding:15px 18px;margin:22px 0}.how strong{display:block;margin-bottom:4px}.round{margin:22px 0 0}.round-title{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:var(--green);font-weight:850}.q{padding:13px 0;border-bottom:1px solid var(--line)}.q:last-child{border:0}.q b{color:var(--gold);font-size:11px;letter-spacing:.08em}.q p{margin:3px 0 0;font-weight:600}
+.actions{border-top:1px solid var(--line);margin-top:28px;padding-top:20px;display:flex;gap:10px;flex-wrap:wrap}button.action{border:0;border-radius:9px;padding:11px 16px;font:700 14px Inter,system-ui;cursor:pointer}.primary{background:var(--green);color:white}.secondary{background:#efede7;color:#45463f}.status{font-size:13px;color:var(--muted);margin-top:10px}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:0 20px 28px}
+@media(max-width:760px){.wrap{grid-template-columns:1fr;padding:14px 11px 38px}.side{position:static}.article{padding:22px 18px}.hero{height:135px}}
+</style></head>
+<body>
+<header><div class="head"><div class="eyebrow">A shared reading journal</div><h1>Hai Góc Nhìn</h1><p>5 câu chuyện để đọc trước trên mạng, rồi gặp nhau ngoài đời để chia sẻ, chất vấn và khám phá cách người kia nhìn thế giới.</p></div></header>
+<div class="wrap">
+<aside class="side"><h2>Thư viện câu chuyện</h2><div id="list"></div><div class="progress"><span id="bar"></span></div><div class="muted" id="count">0/5 câu chuyện đã hoàn thành</div><p class="muted">Đánh dấu hoàn thành sau khi hai bạn đã gặp và trao đổi xong.</p></aside>
+<main class="article" id="content"></main>
+</div><footer>Hai Góc Nhìn · Đọc riêng, gặp nhau, lắng nghe nhau</footer>
+<script>
+const stories=[
+{title:"Cái giá của sự thành công",topic:"Tiền bạc · Tình yêu · Gia đình",level:"Độ sâu 8/10",intro:"Một lựa chọn tưởng như chỉ liên quan đến sự nghiệp, nhưng thực chất chạm đến điều mỗi người xem là quan trọng trong cuộc sống.",
+parts:[
+["Minh và giấc mơ đổi đời",`Minh, 28 tuổi, sinh ra trong một gia đình bình thường. Bố mẹ làm lao động tự do, không có nhiều tài sản nhưng luôn cố gắng để Minh được học hành đầy đủ. Từ nhỏ, Minh đã nghĩ: “Mình nhất định phải giàu có để bố mẹ không còn vất vả và người mình yêu sau này không phải chịu khổ.”
+
+Sau nhiều năm cố gắng, Minh thành lập được một công ty riêng. Ở tuổi 28, Minh có thu nhập tốt, một căn hộ đẹp, xe hơi và vị trí mà nhiều người cùng tuổi mơ ước.`],
+["Điều Minh dần đánh mất",`Nhưng có một điều Minh dần đánh mất: thời gian. Minh thường xuyên làm việc đến khuya. Những bữa cơm gia đình ngày càng ít đi. Những chuyến đi cùng người yêu liên tục bị hoãn. Cuộc gọi của bố mẹ đôi khi chỉ được trả lời bằng câu: “Con đang bận, để hôm khác con gọi lại nhé.”
+
+Lan, người yêu Minh hơn bốn năm, không mong Minh giàu hơn nữa. Cô chỉ muốn hai người có thời gian ăn một bữa cơm, đi dạo cuối tuần hoặc trò chuyện mà không bị công việc chen ngang.
+
+Một tối, Lan nói: “Em biết anh đang cố gắng vì tương lai của chúng mình. Nhưng em không biết tương lai đó là khi nào. Em không muốn đến lúc anh có tất cả mọi thứ thì chúng ta lại chẳng còn ở bên nhau.”
+
+Minh nghĩ Lan không hiểu áp lực mình đang gánh. Nếu anh không cố gắng, công ty có thể mất cơ hội, nhân viên có thể mất việc và gia đình anh khó có cuộc sống tốt hơn.`],
+["Cơ hội lớn",`Vài tháng sau, một đối tác đề nghị đầu tư, giúp công ty mở rộng quy mô gấp nhiều lần. Điều kiện là Minh phải chuyển đến thành phố khác ít nhất ba năm, làm việc với cường độ cao và gần như không có thời gian cho cuộc sống cá nhân.
+
+Nếu chấp nhận, tài sản của Minh có thể tăng lên nhiều lần. Nếu từ chối, anh giữ được cuộc sống hiện tại nhưng có thể bỏ lỡ cơ hội lớn nhất sự nghiệp.`],
+["Bữa cơm trước quyết định",`Đêm trước ngày quyết định, Minh về nhà bố mẹ ăn cơm. Mẹ anh gắp thức ăn vào bát rồi nói: “Bố mẹ già rồi, chẳng cần con mua nhà hay mua xe gì đâu. Có thời gian về ăn với bố mẹ một bữa cơm là vui rồi.”
+
+Điện thoại Minh sáng lên. Lan nhắn: “Em không cần một người có thể cho em cuộc sống giàu sang. Em cần một người thực sự có mặt trong cuộc sống của em.”
+
+Minh đứng giữa một bên là tương lai có thể rất giàu có, một bên là những điều anh đang có nhưng ngày càng ít thời gian để trân trọng. Anh nên tiếp tục đánh đổi hiện tại để xây dựng tương lai, hay học cách hài lòng với những gì mình đang có?`]],
+rounds:[
+["Làm rõ vấn đề",["Minh đang thực sự sống vì gia đình hay đang dùng gia đình làm lý do để biện minh cho tham vọng cá nhân?","Nếu là Lan, bạn có cho rằng Minh ích kỷ không, hay Lan chưa thấu hiểu áp lực của Minh?","Một người có trách nhiệm là người kiếm thật nhiều tiền hay người biết dành thời gian cho những người mình yêu?"]],
+["Đào sâu quan điểm",["Nếu Minh từ chối cơ hội để ở lại với Lan, nhưng năm năm sau công ty thất bại, liệu anh có thể trách Lan không?","Con người có thật sự cần nhiều tiền hơn, hay đôi khi chỉ bị cuốn vào cảm giác phải thành công hơn người khác?","Bạn có sẵn sàng dành 10 năm tuổi trẻ để đổi lấy sự giàu có và tự do tài chính sau này không?"]],
+["Phản biện",["Một người kiếm 10 tỷ đồng mỗi năm nhưng chỉ dành một ngày mỗi tuần cho gia đình có thành công hơn người kiếm 30 triệu mỗi tháng nhưng luôn hiện diện bên người thân?","“Muốn có tương lai tốt đẹp, đôi khi phải chấp nhận hiện tại không hạnh phúc.” Bạn đồng ý đến mức nào?","Trong tình yêu, có nên chấp nhận những giai đoạn phải hy sinh thời gian bên nhau để hỗ trợ sự nghiệp của đối phương?"]]},
+challenge:["Hãy thử bảo vệ quan điểm ngược lại với điều bạn thực sự tin.","Nếu Minh là bạn thân, bạn sẽ khuyên gì? Lời khuyên có thay đổi nếu bạn là Lan không?","Có lựa chọn thứ ba nào giúp Minh theo đuổi cơ hội mà vẫn bảo vệ mối quan hệ không?"]},
+{title:"Sự thật có phải lúc nào cũng tốt?",topic:"Đạo đức · Niềm tin · Tình bạn",level:"Độ sâu 8/10",intro:"Một lời nói dối xuất phát từ ý tốt có còn là sai trái khi nó giúp người khác tránh khỏi tổn thương?",
+parts:[
+["Một bí mật tình cờ",`Huy và Nam là bạn thân từ thời đại học. Họ từng cùng nhau trải qua những năm tháng khó khăn, giúp nhau tìm việc và luôn tin rằng giữa hai người không có bí mật.
+
+Một ngày, Huy phát hiện Nam đã âm thầm vay một khoản tiền lớn từ nhiều người để đầu tư. Dự án thất bại, Nam đang nợ nần và chưa nói với vợ. Huy biết chuyện vì một người cho vay tìm đến nhờ chuyển lời.`],
+["Lời hứa khó giữ",`Nam cầu xin Huy đừng nói với vợ mình. Anh giải thích rằng vợ đang mang thai, sức khỏe và tinh thần không tốt. Anh chỉ cần thêm vài tháng để xoay xở, rồi sẽ tự thú nhận khi mọi thứ ổn định.
+
+Huy đồng ý giữ bí mật. Nhưng vài tuần sau, vợ Nam hỏi Huy liệu gia đình họ có đang gặp vấn đề tài chính không. Cô nhận thấy Nam thường xuyên mất ngủ, né tránh các cuộc gọi và có những khoản chi không rõ ràng.
+
+Huy đứng trước hai lựa chọn: giữ lời hứa với bạn thân hoặc nói ra sự thật để người vợ có cơ hội bảo vệ bản thân và gia đình.`],
+["Sự thật bị trì hoãn",`Huy nghĩ rằng nếu nói ra, anh có thể phá vỡ một gia đình. Nhưng nếu tiếp tục im lặng, người vợ có thể đưa ra những quyết định tài chính quan trọng mà không biết rủi ro đang tồn tại.
+
+Nam nói: “Nếu cậu là bạn tôi, cậu phải đứng về phía tôi lúc khó khăn nhất.”
+
+Huy tự hỏi: tình bạn có nghĩa là bảo vệ người mình thương, kể cả khi họ sai, hay đôi khi tình bạn thật sự là dám khiến họ đối diện với hậu quả?`]],
+rounds:[
+["Ranh giới của sự trung thành",["Giữ bí mật cho Nam là trung thành hay tiếp tay cho hành vi thiếu trách nhiệm?","Huy có quyền tiết lộ chuyện riêng của bạn mình khi người khác có thể bị ảnh hưởng không?","Một lời nói dối để bảo vệ cảm xúc người khác có thể được xem là lòng tốt không?"]],
+["Góc nhìn đạo đức",["Nếu Nam đã có kế hoạch trả nợ rõ ràng, Huy có nên tiếp tục im lặng?","Quyền được biết sự thật có quan trọng hơn quyền riêng tư của Nam không?","Bạn đánh giá hành động dựa trên ý định hay hậu quả mà nó gây ra?"]],
+["Phản biện",["Nếu người vợ là bạn thân của Huy thay vì Nam, lựa chọn của Huy có thay đổi không?","Có phải đôi khi nói thật chỉ giúp người nói cảm thấy nhẹ lòng, chứ không thực sự giúp người nghe?","Nếu sự thật khiến một gia đình tan vỡ, người nói ra sự thật có phải chịu một phần trách nhiệm?"]]},
+challenge:["Hãy lập luận rằng Huy nên giữ bí mật, sau đó đổi vai và bảo vệ việc nói ra sự thật.","Bạn sẽ đặt giới hạn nào cho những bí mật mà mình sẵn sàng giữ hộ người khác?","Có cách nào để Huy khuyến khích Nam tự nói thật mà không phản bội lời hứa ngay lập tức?"]},
+{title:"Chiếc ghế trống trong bữa cơm",topic:"Gia đình · Tự do · Trách nhiệm",level:"Độ sâu 8.5/10",intro:"Khi lòng biết ơn với gia đình va chạm với quyền tự quyết cuộc đời, đâu là giới hạn của chữ hiếu?",
+parts:[
+["Người con luôn được kỳ vọng",`Thảo là con gái duy nhất trong một gia đình ở tỉnh. Bố mẹ đã dành phần lớn tiền tiết kiệm để cho Thảo học đại học ở thành phố. Sau khi tốt nghiệp, Thảo có công việc tốt và dần xây dựng được cuộc sống riêng.
+
+Bố mẹ mong Thảo trở về quê, làm công việc ổn định gần nhà và sớm lập gia đình. Họ tin rằng con gái ở gần thì mới có thể chăm sóc bố mẹ khi tuổi già.`],
+["Một cơ hội khác",`Thảo nhận được lời mời làm việc ở nước ngoài trong hai năm. Đây là cơ hội cô đã theo đuổi từ lâu, có thể giúp cô phát triển nghề nghiệp và trải nghiệm cuộc sống mới.
+
+Khi Thảo thông báo, mẹ im lặng rất lâu rồi nói: “Bố mẹ nuôi con ăn học không phải để sau này con đi xa, đến lúc bố mẹ cần thì chẳng thấy con đâu.”
+
+Thảo cảm thấy tội lỗi. Cô biết bố mẹ đã hy sinh nhiều, nhưng cũng nhận ra nếu từ bỏ cơ hội này chỉ vì sợ làm bố mẹ buồn, có thể cô sẽ tiếc nuối trong nhiều năm.`],
+["Bữa cơm không trọn vẹn",`Trong bữa cơm cuối tuần, bố Thảo nói: “Bố mẹ không cấm con đi. Nhưng con phải hiểu, thời gian của bố mẹ không còn nhiều như thời gian của con.”
+
+Thảo không biết phải trả lời thế nào. Cô yêu thương bố mẹ, nhưng không muốn tình yêu ấy trở thành một món nợ khiến mọi lựa chọn trong đời đều phải xin phép.
+
+Cô tự hỏi: sống theo mong muốn của bản thân có phải là vô ơn? Và hy sinh ước mơ để làm bố mẹ yên lòng có chắc sẽ khiến cả gia đình hạnh phúc?`]],
+rounds:[
+["Hiếu thảo và tự do",["Bố mẹ hy sinh cho con có đồng nghĩa con phải sống theo kỳ vọng của bố mẹ không?","Thảo có ích kỷ khi chọn cơ hội cá nhân dù biết bố mẹ buồn không?","Chữ hiếu nên được thể hiện bằng sự hiện diện, sự chăm sóc hay việc làm theo mong muốn của cha mẹ?"]],
+["Nhìn từ hai thế hệ",["Nếu bạn là bố mẹ Thảo, điều gì khiến bạn lo lắng nhất: khoảng cách, sự cô đơn hay cảm giác không còn được con cần đến?","Bố mẹ có trách nhiệm điều chỉnh kỳ vọng khi con trưởng thành không?","Một quyết định đúng với cá nhân nhưng khiến gia đình thất vọng có phải là quyết định sai?"]],
+["Phản biện",["Nếu bố mẹ thực sự cần người chăm sóc vì sức khỏe, Thảo có nên thay đổi kế hoạch?","Bạn sẽ phân biệt thế nào giữa hy sinh vì tình yêu và đánh mất bản thân vì cảm giác tội lỗi?","Nếu Thảo ở lại nhưng trong lòng luôn oán trách, đó có thực sự là điều tốt cho gia đình?"]]},
+challenge:["Hãy bảo vệ quan điểm rằng Thảo nên ở lại, kể cả khi bạn không đồng ý.","Sau đó hãy bảo vệ quyền ra đi của Thảo mà không phủ nhận công lao của bố mẹ.","Đề xuất một phương án dung hòa có trách nhiệm cụ thể, không chỉ là lời hứa chung chung."]},
+{title:"Người tốt có luôn được đền đáp?",topic:"Lòng tốt · Công bằng · Xã hội",level:"Độ sâu 9/10",intro:"Nếu lòng tốt liên tục khiến một người chịu thiệt, họ có nên tiếp tục tử tế hay học cách đặt lợi ích của mình lên trước?",
+parts:[
+["Người luôn giúp đỡ",`An làm việc trong một công ty nhỏ. Cô nổi tiếng là người nhiệt tình: thường nhận phần việc khó, hỗ trợ đồng nghiệp mới và sẵn sàng ở lại khi nhóm cần.
+
+An tin rằng đối xử tốt với mọi người là điều nên làm, ngay cả khi không nhận lại điều gì. Nhưng dần dần, sự nhiệt tình ấy trở thành điều mà mọi người mặc định cô phải làm.`],
+["Khi lòng tốt bị xem là nghĩa vụ",`Một đồng nghiệp thường xuyên nhờ An làm hộ phần việc của mình. Ban đầu An giúp vì nghĩ ai cũng có lúc khó khăn. Nhưng việc này kéo dài nhiều tháng, khiến An phải làm muộn và ảnh hưởng đến kết quả cá nhân.
+
+Khi An từ chối, đồng nghiệp nói: “Trước giờ bạn vẫn giúp mà. Dạo này bạn thay đổi rồi đấy.”
+
+Trong đợt xét tăng lương, An không được ghi nhận vì phần lớn thời gian cô dành để hỗ trợ người khác, còn đồng nghiệp kia lại nổi bật nhờ hoàn thành những dự án mang tên mình.`],
+["Một lựa chọn mới",`An bắt đầu nghĩ rằng có lẽ mình đã quá dễ chịu. Cô cân nhắc từ nay chỉ làm đúng phần việc, không giúp ai nếu không có lợi ích rõ ràng.
+
+Nhưng cô cũng sợ mình sẽ trở thành kiểu người mà trước đây cô không thích: lạnh lùng, tính toán và chỉ quan tâm đến bản thân.
+
+An tự hỏi: tử tế có cần giới hạn không? Nếu giúp đỡ người khác khiến mình liên tục chịu thiệt, tiếp tục tử tế có còn là điều đúng đắn?`]],
+rounds:[
+["Bản chất của lòng tốt",["Lòng tốt có còn là lòng tốt nếu người giúp đỡ mong được ghi nhận hoặc đền đáp?","Từ chối giúp đỡ có khiến một người trở nên ích kỷ không?","Có phải người tử tế cần học cách nói “không” để không bị lợi dụng?"]],
+["Công bằng và lợi ích",["An có trách nhiệm với việc mình không đặt ranh giới từ đầu không?","Trong môi trường cạnh tranh, người tử tế có cần thực tế và quyết đoán hơn không?","Bạn ưu tiên công bằng cho bản thân hay sự hòa thuận với tập thể khi hai điều xung đột?"]],
+["Phản biện",["Nếu ai cũng chỉ giúp người khác khi có lợi ích, xã hội sẽ thay đổi thế nào?","Một người có thể vừa rất tử tế vừa biết tính toán quyền lợi của mình không?","Bạn nghĩ người khác có nghĩa vụ phải đáp lại lòng tốt, hay lòng tốt không nên đi kèm kỳ vọng?"]]},
+challenge:["Hãy bảo vệ quan điểm rằng An nên tiếp tục giúp đỡ dù không được ghi nhận.","Hãy lập luận ngược lại: An cần ngừng giúp đỡ và tập trung vào quyền lợi của mình.","Thử xây dựng một nguyên tắc sống giúp vừa giữ lòng tốt vừa không để bản thân bị lợi dụng."]},
+{title:"Nếu được biết trước tương lai",topic:"Hạnh phúc · Lựa chọn · Định mệnh",level:"Độ sâu 9/10",intro:"Biết trước điều gì sẽ xảy ra có khiến ta sống tốt hơn, hay làm mất đi ý nghĩa của lựa chọn và trải nghiệm?",
+parts:[
+["Một lời đề nghị kỳ lạ",`Một người trẻ tên Khang gặp một người lạ tự xưng có khả năng cho anh biết chính xác ba sự kiện lớn trong tương lai của mình. Người lạ nói rõ: thông tin sẽ hoàn toàn chính xác, nhưng Khang không thể thay đổi những sự kiện ấy.
+
+Khang có thể chọn biết trước ba điều: mình sẽ thành công hay thất bại trong sự nghiệp; người mình đang yêu có đi cùng mình đến cuối đời không; và mình sẽ sống đến năm bao nhiêu tuổi.`],
+["Sự tò mò và nỗi sợ",`Ban đầu Khang rất hào hứng. Nếu biết sự nghiệp chắc chắn thành công, anh có thể bớt lo lắng. Nếu biết tình yêu hiện tại không có kết quả, anh có thể tránh đầu tư quá nhiều cảm xúc. Nếu biết tuổi thọ của mình, anh có thể sắp xếp cuộc sống hợp lý hơn.
+
+Nhưng rồi Khang nghĩ đến mặt còn lại. Nếu biết người mình yêu sẽ rời đi, liệu anh có còn yêu họ tự nhiên? Nếu biết mình sẽ thất bại, liệu anh còn đủ động lực cố gắng? Nếu biết mình còn rất ít thời gian, liệu mỗi ngày sẽ trở nên ý nghĩa hơn hay chỉ đầy sợ hãi?`],
+["Quyền được không biết",`Khang nhận ra đôi khi điều khiến con người dũng cảm không phải là biết chắc kết quả, mà là không biết nhưng vẫn lựa chọn bước tiếp.
+
+Người lạ hỏi: “Nếu sự thật có thể giúp cậu tránh đau khổ, nhưng đồng thời lấy đi sự bất ngờ, hy vọng và tự do lựa chọn, cậu có muốn biết không?”
+
+Khang có một đêm để quyết định.`]],
+rounds:[
+["Giá trị của sự không chắc chắn",["Nếu biết trước tình yêu hiện tại sẽ kết thúc, bạn có tiếp tục yêu hết lòng không?","Không biết tương lai là một bất lợi hay chính là điều giúp cuộc sống có ý nghĩa?","Hy vọng có giá trị ngay cả khi kết quả cuối cùng không như mong muốn không?"]],
+["Tự do và định mệnh",["Nếu tương lai đã được xác định và không thể thay đổi, lựa chọn của chúng ta có còn ý nghĩa?","Biết trước thất bại có giúp ta chuẩn bị tốt hơn hay khiến ta mất động lực?","Có những sự thật nào con người không nên biết, dù chúng hoàn toàn chính xác?"]],
+["Phản biện",["Nếu bạn có thể biết chính xác người yêu có phản bội mình hay không, bạn có muốn biết?","Một cuộc đời ít đau khổ nhưng không có bất ngờ có tốt hơn một cuộc đời nhiều cảm xúc nhưng nhiều rủi ro?","Nếu chỉ được biết một trong ba điều, bạn sẽ chọn điều gì và vì sao?"]]},
+challenge:["Hãy bảo vệ quan điểm rằng biết trước tương lai sẽ giúp con người sống tốt hơn.","Hãy bảo vệ quan điểm ngược lại: không biết mới là điều cần thiết để sống tự do.","Nếu không chọn biết bất kỳ điều gì, đó là sự can đảm hay né tránh sự thật?"]}
+];
+let active=0;const completed=JSON.parse(localStorage.getItem("hg_completed")||"{}");
+function renderList(){document.getElementById("list").innerHTML=stories.map((s,i)=>`<button class="item ${i===active?'active':''}" onclick="openStory(${i})"><small>CÂU CHUYỆN 0${i+1} <span class="check">${completed[i]?'✓ ĐÃ XONG':''}</span></small><strong>${s.title}</strong></button>`).join("");let n=Object.values(completed).filter(Boolean).length;document.getElementById("bar").style.width=(n/5*100)+"%";document.getElementById("count").textContent=`${n}/5 câu chuyện đã hoàn thành`;}
+function render(){let s=stories[active],h=`<div class="tags"><span class="tag">CÂU CHUYỆN 0${active+1}</span><span class="tag">${s.topic}</span><span class="tag">${s.level}</span></div><h2>${s.title}</h2><p class="intro">${s.intro}</p><div class="hero"><span>${s.title}</span></div><h3>Đọc câu chuyện</h3>`;
+s.parts.forEach(([t,p])=>h+=`<h3>${t}</h3><div class="story">${p.split("\n\n").map(x=>`<p>${x}</p>`).join("")}</div>`);
+h+=`<div class="pull">Đọc xong, hãy dành vài phút tự suy nghĩ. Đừng vội xem câu trả lời của người kia — hãy để buổi gặp mặt là nơi hai góc nhìn thực sự gặp nhau.</div><div class="how"><strong>Gợi ý cho buổi gặp trực tiếp</strong>Hai bạn có thể chọn một quán cà phê yên tĩnh hoặc đi dạo. Mỗi người lần lượt chia sẻ câu trả lời, người còn lại lắng nghe và hỏi thêm. Không cần thống nhất mọi thứ; mục tiêu là hiểu lý do phía sau quan điểm.</div><h3>Câu hỏi thảo luận & phản biện</h3>`;
+s.rounds.forEach(([title,qs])=>{h+=`<div class="round"><div class="round-title">${title}</div>`;qs.forEach((q,i)=>h+=`<div class="q"><b>CÂU HỎI ${i+1}</b><p>${q}</p></div>`);h+="</div>"});
+h+=`<h3>Thử thách đổi vai</h3><p class="intro">Mỗi người thử bảo vệ một quan điểm trái với suy nghĩ ban đầu của mình.</p>`;s.challenge.forEach((q,i)=>h+=`<div class="q"><b>THỬ THÁCH ${i+1}</b><p>${q}</p></div>`);
+h+=`<div class="actions"><button class="action primary" onclick="markDone()">${completed[active]?'✓ Đã hoàn thành':'Đánh dấu đã đọc và trao đổi xong'}</button><button class="action secondary" onclick="nextStory()">Chuyển câu chuyện tiếp theo →</button></div><div class="status">${completed[active]?'Hai bạn đã hoàn thành câu chuyện này. Có thể đọc lại bất cứ lúc nào.':'Chỉ đánh dấu hoàn thành sau khi hai bạn đã gặp và trao đổi xong.'}</div>`;
+document.getElementById("content").innerHTML=h;}
+function openStory(i){active=i;renderList();render();}
+function markDone(){completed[active]=true;localStorage.setItem("hg_completed",JSON.stringify(completed));renderList();render();if(active<stories.length-1){setTimeout(()=>openStory(active+1),250)}}
+function nextStory(){openStory((active+1)%stories.length)}
+renderList();render();
+</script></body></html>
